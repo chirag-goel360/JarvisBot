@@ -17,40 +17,40 @@ from tkinter import *
 window = Tk()
 window.title('Jarvis')
 
-global var 
+global var
 global var1
 
-var = StringVar()
-var1 = StringVar()
-
+# Add your friends emmail ID here
 emailTo = {
-	"key": "emailid@gmail.com",
-	"key": "emailid@gmail.com",
-	"key": "emailid@gmail.com",
-	"key": "emailid@gmail.com",
+	"tag1": "email_id1",
+	"tag2": "email_id2",
+	"tag3": "email_id3"
 }
 
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
-engine.setProperty('voice',voices[0].id)
+engine.setProperty('voice', voices.id)
+
 
 def update(ind):
-	frame = frames[(ind) % 100]
+	frame = frames[ind % 100]
 	ind += 1
-	label.configure(image = frame)
-	window.after(100, update ,ind)
+	label.configure(image=frame)
+	window.after(100, update, ind)
+
 
 def speak(audio):
 	engine.say(audio)
 	engine.runAndWait()
 
+
 def wishMe():
 	hour = int(datetime.datetime.now().hour)
-	if hour>=0 and hour<12:
+	if 0 <= hour < 12:
 		var.set("Good Morning!")
 		window.update()
 		speak("Good Morning!")
-	elif hour>=12 and hour<18:
+	elif 12 <= hour < 18:
 		var.set("Good Afternoon!")
 		window.update()
 		speak("Good Afternoon!")
@@ -59,6 +59,7 @@ def wishMe():
 		window.update()
 		speak("Good Evening!")
 	speak("I am Jarvis, Sir. Please tell me how may I help you")
+
 
 def takeCommand():
 	r = sr.Recognizer()
@@ -72,22 +73,24 @@ def takeCommand():
 		var.set("Recognizing...")
 		window.update()
 		print("Recognizing...")
-		query = r.recognize_google(audio,language='en-in')
+		query = r.recognize_google(audio, language='en-in')
 		print(f"User said: {query}\n")
 	except Exception as e:
-		print("say that again please...")
+		print("say that again please..."+e)
 		return "None"
-		var1.set(query)
-		window.update()
 	return query
 
-def sendEmail(to,content):
+
+def sendEmail(to, content):
 	server = smtplib.SMTP('smtp.gmail.com')
 	server.ehlo()
 	server.starttls()
-	server.login('Your Email Id','Your Password')
-	server.sendmail('Your Email Id',emailTo[to],content)
+	# Add your Mail ID here
+	server.login('mail_id', 'mail_id_password')
+	# Add your Mail ID here
+	server.sendmail('mail_id', emailTo[to], content)
 	server.close()
+
 
 def playBot():
 	wishMe()
@@ -95,33 +98,39 @@ def playBot():
 		query = takeCommand().lower()
 		if 'wikipedia' in query:
 			speak('Searching Wikipedia......')
-			query = query.replace("wikipedia","")
+			query = query.replace("wikipedia", "")
 			results = wikipedia.summary(query, sentences=2)
 			speak('According to wikipedia')
 			print(results)
 			speak(results)
 		elif 'youtube' in query:
 			speak("Here you go to Youtube")
-			webbrowser.get('C:/Program Files (x86)/Google/Chrome/Application/chrome.exe %s').open('https://www.youtube.com/')
+			# Modify path according to your system
+			webbrowser.get('C:/Program Files/Google/Chrome/Application/chrome.exe %s').open('https://www.youtube.com/')
 		elif 'google' in query:
 			speak("Here you go to Google ")
-			webbrowser.get('C:/Program Files (x86)/Google/Chrome/Application/chrome.exe %s').open('https://www.google.com/')
+			# Modify path according to your system
+			webbrowser.get('C:/Program Files/Google/Chrome/Application/chrome.exe %s').open('https://www.google.com/')
 		elif 'coding blocks' in query:
 			speak("Here you go to Coding Blocks")
-			webbrowser.get('C:/Program Files (x86)/Google/Chrome/Application/chrome.exe %s').open('https://online.codingblocks.com/')
+			# Modify path according to your system
+			webbrowser.get('C:/Program Files/Google/Chrome/Application/chrome.exe %s').open('https://online.codingblocks.com/')
 		elif 'open code' in query:
-			codePath = "Path for visual studio code in your PC"
+			# Add your VS Code path here
+			codePath = "Vs Code Path"
 			os.startfile(codePath)
 		elif 'open java' in query:
-			codeJava = "Path for Ecllipse in your PC"
+			# Add your Eclipse path here
+			codeJava = "Eclipse Path"
 			os.startfile(codeJava)
 		elif 'play music' in query:
-			music_dir = 'Song Directory'
+			# Add your Song Directory path here
+			music_dir = 'Song Directory Path'
 			songs = os.listdir(music_dir)
 			print(songs)
 			play_rand = random.choice(songs)
 			print("playing "+play_rand)
-			os.startfile(os.path.join(music_dir,play_rand))
+			os.startfile(os.path.join(music_dir, play_rand))
 		elif 'the time' in query or 'current time' in query:
 			strTime = datetime.datetime.now().strftime("%H:%M:%S")
 			print(strTime)
@@ -139,7 +148,7 @@ def playBot():
 				window.update()
 				speak("What should I say?")
 				content = takeCommand()
-				sendEmail(to,content)
+				sendEmail(to, content)
 				var.set("Email has been sent! ")
 				window.update()
 				print("Email has been sent! \n")
@@ -154,7 +163,7 @@ def playBot():
 			window.update()
 			speak("what should I write, sir")
 			note = takeCommand()
-			file = open('File.txt','w')
+			file = open('File.txt', 'w')
 			var.set("Sir, should I include date and time?")
 			window.update()
 			speak("Sir, should I include date and time? ")
@@ -167,19 +176,20 @@ def playBot():
 				var.set("File created successfully with date and time")
 				window.update()
 				speak("File created successfully with date and time")
-			else: 
+			else:
 				file.write(note)
 		elif 'show note' in query:
 			var.set("showing notes")
 			window.update()
 			speak("showing notes")
-			file = open('File.txt','r')
+			file = open('File.txt', 'r')
 			var.set(file.read())
 			window.update()
 			print(file.read())
 			speak(file.read(10))
 		elif 'weather' in query:
-			api_key = "API KEY"
+			# Add your Weather API key here (https://openweathermap.org/)
+			api_key = "API Key"
 			base_url = "http://api.openweathermap.org/data/2.5/weather?"
 			speak("Please tell City name to check weather")
 			city_name = takeCommand()
@@ -190,16 +200,17 @@ def playBot():
 				y = x["main"]
 				current_temperature = y["temp"]
 				current_pressure = y["pressure"]
-				current_humidiy = y["humidity"]
+				current_humidity = y["humidity"]
 				z = x["weather"]
 				weather_description = z[0]["description"]
-				var.set(" Temperature (in celcius unit) = " +str(current_temperature)+"\n atmospheric pressure (in hPa unit) ="+str(current_pressure) +"\n humidity (in percentage) = " +str(current_humidiy) +"\n description = " +str(weather_description))
+				var.set(" Temperature (in Celsius unit) = " +str(current_temperature)+"\n atmospheric pressure (in hPa unit) ="+str(current_pressure) +"\n humidity (in percentage) = " +str(current_humidity) +"\n description = " +str(weather_description))
 				window.update()
-				print(" Temperature (in celcius unit) = " +str(current_temperature)+"\n atmospheric pressure (in hPa unit) ="+str(current_pressure) +"\n humidity (in percentage) = " +str(current_humidiy) +"\n description = " +str(weather_description))
+				print(" Temperature (in Celsius unit) = " +str(current_temperature)+"\n atmospheric pressure (in hPa unit) ="+str(current_pressure) +"\n humidity (in percentage) = " +str(current_humidity) +"\n description = " +str(weather_description))
 			else:
 				speak(" City Not Found ")
 		elif 'news' in query:
-			api_news_key = "API KEY"
+			# Add your News API key here (https://newsapi.org/)
+			api_news_key = "API Key"
 			try:
 				jsonObj = urlopen('https://newsapi.org/v1/articles?source=the-times-of-india&sortBy=top&apiKey='+api_news_key)
 				data = json.load(jsonObj)
@@ -221,21 +232,21 @@ def playBot():
 			speak(p)
 		elif 'search' in query or 'give' in query:
 			query = query.replace("search", "")
-			query = query.replace("give","")
+			query = query.replace("give", "")
 			webbrowser.open(query)
 		elif 'where is' in query:
-			query = query.replace('where is','')
+			query = query.replace('where is', '')
 			location = query
 			speak('locating on google maps'+location)
 			webbrowser.open('https://www.google.com/maps/place/'+location)
 		elif 'find' in query:
-			query = query.replace('find','')
+			query = query.replace('find', '')
 			findVideo = query
 			speak('Finding '+findVideo + 'on Youtube')
 			webbrowser.open('https://www.youtube.com/results?search_query='+findVideo)
 		elif 'amazon' in query:
-			query = query.replace('amazon','')
-			query = query.replace('flipkart','')
+			query = query.replace('amazon', '')
+			query = query.replace('flipkart', '')
 			comodity = query
 			speak('Finding '+comodity + 'on Amazon')
 			webbrowser.open('https://www.amazon.in/s?k='+comodity+'&ref=nb_sb_noss_2')
@@ -266,20 +277,20 @@ def playBot():
 				ctypes.windll.user32.LockWorkStation()
 			elif x == 'No':
 				exit()
-			else: 
-				speak("Sorry Sir, I did'nt get it")
+			else:
+				speak("Sorry Sir, I didn't get it")
 		elif 'restart' in query:
 			subprocess.call(["shutdown", "/r"])
 		elif 'shutdown system' in query:
 			speak('Sir, are you sure')
 			o = takeCommand().lower()
 			if o == 'yes':
-				speak('Hold a sec!! starting process of shuting down system')
+				speak('Hold a sec!! starting process of shutting down system')
 				subprocess.call('shutdown /p /f')
 			elif o == 'No':
 				exit()
-			else: 
-				speak("Sorry Sir, I did'nt get it")
+			else:
+				speak("Sorry Sir, I didn't get it")
 		elif 'exit' in query or "i am done" in query or " leave" in query:
 			var.set("Bye Sir")
 			window.update()
@@ -287,11 +298,12 @@ def playBot():
 			speak("Thank You!")
 			break
 
+
 def exitBot():
 	query = 'exit'.lower()
 	if 'exit' in query or "i am done" in query or " leave" in query:
 		var.set("Bye Sir")
-		bt1.configure(bg = '#5C85FB')
+		bt1.configure(bg='#5C85FB')
 		bt0['state'] = 'normal'
 		bt2['state'] = 'normal'
 		window.update()
@@ -299,27 +311,27 @@ def exitBot():
 		speak("Thank You!")
 		exit()
 
-label2 = Label(window,textvariable = var1,bg = '#FAB60C')
-label2.configure(font = ('Courier',20))
+
+label2 = Label(window, textvariable=var1, bg='#FAB60C')
+label2.configure(font=('Courier', 20))
 var1.set('User Said:')
 label2.pack()
 
-label1 = Label(window,textvariable=var,bg='#ADD8E6')
-label1.configure(font = ('Courier',20))
+label1 = Label(window, textvariable=var, bg='#ADD8E6')
+label1.configure(font=('Courier', 20))
 var.set(' Welcome! ')
 label1.pack()
 
-frames = [PhotoImage(file = 'robo.gif',format = 'gif -index %i' %(i))
-for i in range(200)]
+frames = [PhotoImage(file='robo.gif', format='gif -index %i' %i)for i in range(200)]
 
-label = Label(window,width = 350,height = 300)
+label = Label(window, width=350, height=300)
 label.pack()
-window.after(0,update,0)
+window.after(0, update, 0)
 
-Label(window,text = " Jarvis ", font = ("Arial Bold",20)).pack()
-bt0 = Button(window,text = "WISH_ME", bg = "Blue",fg = "Black", command = wishMe, width = 20).pack()
-bt1 = Button(window,text = "PLAY", bg = "green",fg = "Black",command = playBot,  width = 20).pack()
-bt2 = Button(window,text = "EXIT", bg = "Red",fg = "White",command = window.destroy,  width = 20).pack()
+Label(window, text=" Jarvis ", font=("Arial Bold", 20)).pack()
+bt0 = Button(window, text="WISH_ME", bg="Blue", fg="Black", command=wishMe, width=20).pack()
+bt1 = Button(window, text="PLAY", bg="green", fg="Black", command=playBot,  width=20).pack()
+bt2 = Button(window, text="EXIT", bg="Red", fg="White", command=window.destroy,  width=20).pack()
 
 window.geometry('400x600')
 window.mainloop()
