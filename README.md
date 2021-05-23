@@ -10,7 +10,7 @@ For learning ChatBot development you can take help from these sites and videos.
 A few resources to get you started are:
 
 - [Lab: Learn Python Basics](https://www.youtube.com/playlist?list=PLsyeobzWxl7poL9JTVyndKe62ieoN-MZ3)
-- [Cookbook: Site for learning Assistant development](https://www.geeksforgeeks.org/personal-voice-assistant-in-python/) 
+- [Cookbook: Site for learning Assistant development](https://www.geeksforgeeks.org/personal-voice-assistant-in-python/)
 - [Place to Learn: ChatBot Development](https://www.youtube.com/watch?v=Lp9Ftuq2sVI&t=3s)
 - [Place to Learn: GUI Development](https://www.tutorialspoint.com/python/python_gui_programming.htm)
 
@@ -27,7 +27,7 @@ tkinter |
 - Ritik Miglani -Student of Amity School of Engineering and Technology(B.Tech. CSE)
 
         Email Address - 'miglaniritik20@gmail.com'
-        
+
 - Varun Prakash Tiwari -Student of Dr. Akhilesh Das Gupta Institute of Technology & Management(B.Tech. CSE)
 
         Email Address - 'varunprakash652@gmail.com'
@@ -35,7 +35,7 @@ tkinter |
 - Chirag Goel -Student of Amity School of Engineering and Technology(B.Tech. CSE)
 
         Email Address - 'chirag.goel360@gmail.com'
-        
+
 Sample Code for JarvisBot
 ```
 def takeCommand():

@@ -20,7 +20,10 @@ window.title('Jarvis')
 global var
 global var1
 
-# Add your friends emmail ID here
+var = StringVar()
+var1 = StringVar()
+
+# Add your friends email ID here
 emailTo = {
 	"tag1": "email_id1",
 	"tag2": "email_id2",
@@ -29,7 +32,7 @@ emailTo = {
 
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
-engine.setProperty('voice', voices.id)
+engine.setProperty('voice', voices[0].id)
 
 
 def update(ind):
@@ -76,7 +79,7 @@ def takeCommand():
 		query = r.recognize_google(audio, language='en-in')
 		print(f"User said: {query}\n")
 	except Exception as e:
-		print("say that again please..."+e)
+		print("say that again please...")
 		return "None"
 	return query
 
@@ -102,6 +105,8 @@ def playBot():
 			results = wikipedia.summary(query, sentences=2)
 			speak('According to wikipedia')
 			print(results)
+			var.set(results)
+			window.update()
 			speak(results)
 		elif 'youtube' in query:
 			speak("Here you go to Youtube")
